@@ -12,6 +12,7 @@ const TasksPage = () => {
     user,
     taskList,
     setTaskList,
+    loading,
     getTasksByUserId,
     taskFormData,
     currentEditedId,
@@ -24,13 +25,11 @@ const TasksPage = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [isFetching, setIsFetching] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   // Memoize fetchTasks to prevent unnecessary re-renders
   const fetchTasks = useCallback(async () => {
     if (!user?._id) return; // Guard against missing user
     setIsFetching(true);
-    setLoading(true);
 
     setError("");
     const result = await getTasksByUserId(user._id);
@@ -38,7 +37,6 @@ const TasksPage = () => {
       setError(result.message);
     }
     setIsFetching(false);
-    setLoading(false);
   }, [user?._id, getTasksByUserId]);
 
   useEffect(() => {
